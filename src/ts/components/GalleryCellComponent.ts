@@ -1,22 +1,27 @@
 import BaseComponent from './BaseComponent.js';
+import {GalleryCellComponentType} from '../interfaces.js'
 
-export default class GalleryCellComponent extends BaseComponent {
-    constructor(props) {
+export default class GalleryCellComponent extends BaseComponent implements GalleryCellComponentType {
+    imageElement!: HTMLElement
+    imageTitleElement!: HTMLElement
+    removeButton!: HTMLElement
+
+    constructor(props: any) {
         super(props);
         this.initTemplate(props);
     }
 
-    initTemplate = ({ content, onRemove }) => {
-        this.template = document.createElement('div');
+    initTemplate = ({ content, onRemove }: any) => {
+        this.component = document.createElement('div');
 
         // define cell
-        this.template.setAttribute('id', content.id);
-        this.template.classList.add('gallery__cell');
+        this.component.setAttribute('id', content.id);
+        this.component.classList.add('gallery__cell');
 
         // define image element
         this.imageElement = document.createElement('div');
         this.imageElement.classList.add('gallery__image');
-        this.imageElement.appendChild(content.template);
+        this.imageElement.appendChild(content.component);
 
         // define image title
         this.imageTitleElement = document.createElement('div');
@@ -30,9 +35,9 @@ export default class GalleryCellComponent extends BaseComponent {
         this.removeButton.addEventListener('click', () => onRemove(content.id));
 
         // add elements to cell
-        this.template.appendChild(this.imageElement);
-        this.template.appendChild(this.imageTitleElement);
-        this.template.appendChild(this.removeButton);
-        this.target.appendChild(this.template);
+        this.component.appendChild(this.imageElement);
+        this.component.appendChild(this.imageTitleElement);
+        this.component.appendChild(this.removeButton);
+        this.target.appendChild(this.component);
     };
 };

@@ -13,9 +13,18 @@ import BaseComponent from './BaseComponent.js';
 import GalleryCellComponent from './GalleryCellComponent.js';
 import ImageComponent from './ImageComponent.js';
 import InputComponent from './InputComponent.js';
+import {GalleryComponentType, ImageMapType, InputComponentType, ButtonComponentType, ImageType} from '../interfaces'
 
-export default class GalleryComponent extends BaseComponent {
-    constructor(props) {
+
+export default class GalleryComponent extends BaseComponent implements GalleryComponentType {
+    images!: ImageMapType
+    galleryPanel!: HTMLElement
+    galleryContainer!: HTMLElement
+    input!: InputComponentType
+    generateButton!: ButtonComponentType
+    clearButton!: ButtonComponent
+
+    constructor(props: any) {
         super(props);
 
         this.images = {};
@@ -24,8 +33,8 @@ export default class GalleryComponent extends BaseComponent {
     }
 
     initTemplate = () => {
-        this.template = document.createElement('div');
-        this.template.classList.add('gallery');
+        this.component = document.createElement('div');
+        this.component.classList.add('gallery');
 
         // define panel
         this.galleryPanel = document.createElement('div');
@@ -57,24 +66,24 @@ export default class GalleryComponent extends BaseComponent {
         });
 
         // add elements to gallery
-        this.galleryPanel.appendChild(this.generateButton.template);
-        this.galleryPanel.appendChild(this.clearButton.template);
-        this.template.appendChild(this.galleryPanel);
-        this.template.appendChild(this.galleryContainer);
-        this.target.appendChild(this.template);
+        this.galleryPanel.appendChild(this.generateButton.component);
+        this.galleryPanel.appendChild(this.clearButton.component);
+        this.component.appendChild(this.galleryPanel);
+        this.component.appendChild(this.galleryContainer);
+        this.target.appendChild(this.component);
     };
 
     getImages = () => {
         apiGetImages()
             .then(response => {
                 if (response) {
-                    console.log(response);
                     for (let [id, image] of Object.entries(response)) {
                         if (!this.images[id]) {
+                            console.log(image, typeof image)
                             this.images[id] = new ImageComponent({
                                 id: id,
-                                target: this.template,
-                                content: image,
+                                target: this.component,
+                                content: <any>image,
                             });
                         }
                     }
@@ -98,7 +107,7 @@ export default class GalleryComponent extends BaseComponent {
     };
 
     generateImages = () => {
-        for (let i = 0; i < (this.input.template.value || 5); i++) {
+        for (let i = 0; i < ((<HTMLInputElement>this.input.component).value || 5); i++) {
             let id = random(1, 1000);
             let imageData = {
                 id,
@@ -108,7 +117,7 @@ export default class GalleryComponent extends BaseComponent {
             if (!this.images[id]) {
                 this.images[id] = new ImageComponent({
                     id: id,
-                    target: this.template,
+                    target: this.component,
                     content: imageData,
                 });
                 apiSetImage(imageData)
@@ -120,13 +129,13 @@ export default class GalleryComponent extends BaseComponent {
         this.fillGallery();
     };
 
-    removeImageById = (imageId) => {
+    removeImageById = (imageId: string) => {
         const confirmation = confirm('Do you want to remove this image?');
         if (confirmation) {
             apiRemoveImageById(imageId)
                 .then(() => {
                     delete this.images[imageId];
-                    this.galleryContainer.removeChild(document.getElementById(imageId));
+                    this.galleryContainer.removeChild(<Node>document.getElementById(imageId));
                 });
         }
     };
