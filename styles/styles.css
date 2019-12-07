@@ -1,0 +1,109 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.gallery {
+    display: block;
+    border: 1px dotted black;
+}
+
+.gallery .gallery__panel {
+    height: 3em;
+    display: flex;
+    padding: 1em 0 1em 1em;
+    background-color: #2c7873;
+    z-index: 999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.gallery__panel input {
+    border: 1px dashed gray;
+    min-width: 20em;
+    margin-right: 1em;
+}
+
+.gallery__panel button {
+    background-color: #004445;
+    border-radius: 5px;
+    color: white;
+    font-size: 1em;
+    padding: 0.5em;
+    margin: 0 0.1em;
+    cursor: pointer;
+}
+
+.gallery__panel button:hover {
+    background-color: #6fb98f;
+}
+
+.gallery .gallery__container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 4em;
+}
+
+.gallery .gallery__cell {
+    margin: 1em;
+    border: 1px solid grey;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.gallery .gallery__cell:hover {
+    box-shadow: 12px 12px 12px 1px black;
+}
+
+.gallery__cell .gallery__image {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+}
+
+.gallery__cell .gallery__image img {
+    transition: all 1s;
+}
+
+.gallery__cell:hover .gallery__image img {
+    transform: scale(1.5);
+}
+
+.gallery__cell .gallery__image-title {
+    background-color: #6fb98f;
+    text-align: center;
+    color: white;
+    padding: 0.5em;
+}
+
+.gallery__cell .gallery__image-title::before {
+    content: "~ ";
+}
+
+.gallery__cell .gallery__image-title::after {
+    content: " ~";
+}
+
+.gallery__cell .gallery__remove_button {
+    transition: opacity 0.3s;
+    background-color: crimson;
+    opacity: 0;
+    width: 1em;
+    height: 1em;
+    line-height: 1em;
+    text-align: center;
+    color: white;
+    display: inline;
+    padding: 0.3em;
+    position: absolute;
+    border-radius: 50%;
+    bottom: 12em;
+    left: 10em;
+    cursor: pointer;
+}
+
+.gallery__cell:hover .gallery__remove_button {
+    opacity: 1;
+}
